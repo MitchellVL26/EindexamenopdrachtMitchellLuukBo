@@ -1,67 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
-using static UnityEngine.GraphicsBuffer;
 
 public class Bulletscript : MonoBehaviour
 {
-    public float speed;
+    public float speed = 50f;
+    public float lifeTime = 15f;
 
+    private Rigidbody rb;
 
-    public enum BulletType
+    void Awake()
     {
-        BULLET,
-        ROCKET,
-        LAZORPEWPEW
+        rb = GetComponent<Rigidbody>();
+        rb.useGravity = false;
+        rb.isKinematic = false;
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
     }
 
-    public BulletType type;
-    // Start is called before the first frame update
     void Start()
     {
-        Destroy(gameObject, 15.0f);
-       
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        transform.position += transform.forward * Time.deltaTime * speed;
-
-       
-        
+        rb.velocity = transform.forward * speed;
+        Destroy(gameObject, lifeTime);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        
         if (collision.transform.tag == "Enemy")
         {
-           
-            Destroy(collision.gameObject);
-          
-        }
-        if (GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
-        {
+            Animator anim = collision.transform.GetComponent<Animator>();
+            if (anim != null)
+            {
+                anim.Play("Death"); // Must match your Animator state name
+            }
+
+            Collider col = collision.transform.GetComponent<Collider>();
+            if (col != null) col.enabled = false;
+
+            Destroy(gameObject);              // kill bullet
             
-            SceneManager.LoadSceneAsync(0);
+
+            if (GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
+            {
+                SceneManager.LoadSceneAsync(0);
+            }
         }
-
-
     }
-    private void OnTriggerEnter(Collider other)
-    {
-
-    }
-    public void DoDamage(float damage)
-    {
-
-    }
-
-
 }
