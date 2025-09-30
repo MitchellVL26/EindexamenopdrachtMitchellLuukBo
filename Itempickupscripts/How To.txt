@@ -1,0 +1,7 @@
+Tag medkit die je moet oppaken met Item
+Zet Inventory & Itemscript scripts op de player
+Zet in Itemscript bij Inventory het inventoryscript en bij cam de camera natuurlijk
+Zet een nieuwe medkit asset in de game en zet hem vast aan de player met de tag Inventoryitem
+Zet bij de nieuwe medkit Pickupitem script erop en zet bij itemid: medkit zorg ook dat hij in het begin van de game ontzichtbaar is
+Nu als je de medkit oppakt verschijnt een nieuwe medkit in beeld die hoort dan in de inventory te zitten en daar kan je op zetten dat je healed(of hoe je het ook schrijft) 
+Als je vragen heb app me misschien reageer ik
